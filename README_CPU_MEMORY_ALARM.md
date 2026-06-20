@@ -4,15 +4,12 @@ http://openshift.github.io/documentation/oo_cartridge_guide.html#tomcat
 
 ## ResourceWarningFilter 테스트 방법
 
-`ResourceWarningFilter`는 HTML/JSP 응답에 시스템 자원 경고 배너를 삽입합니다. 운영 기본 임계치는 `90%`이지만, 실제 테스트 중에 서버 자원을 90%까지 올리기는 어렵기 때문에 `src/main/webapp/WEB-INF/web.xml`의 `resourceWarningThresholdPercent` 값을 임시로 낮춰서 확인할 수 있습니다.
+`ResourceWarningFilter`는 HTML/JSP 응답에 시스템 자원 경고 배너를 삽입합니다. 이 프로젝트는 Spring Boot 3 기반이라 `web.xml` 대신 `ResourceWarningFilterConfig`에서 필터와 초기 파라미터를 등록합니다. 운영 기본 임계치는 `90%`이지만, 실제 테스트 중에 서버 자원을 90%까지 올리기는 어렵기 때문에 `src/main/java/com/example/demo/filter/ResourceWarningFilterConfig.java`의 `RESOURCE_WARNING_THRESHOLD_PERCENT` 값을 임시로 낮춰서 확인할 수 있습니다.
 
 예를 들어 로컬 테스트 시 아래처럼 값을 `1`로 낮추면, JVM 힙/시스템 메모리/시스템 CPU 중 하나라도 1% 이상이면 배너가 표시됩니다.
 
-```xml
-<init-param>
-    <param-name>resourceWarningThresholdPercent</param-name>
-    <param-value>1</param-value>
-</init-param>
+```java
+private static final String RESOURCE_WARNING_THRESHOLD_PERCENT = "1";
 ```
 
 확인 절차:
